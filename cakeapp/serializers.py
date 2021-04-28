@@ -3,12 +3,6 @@ from .models import *
 from django.contrib.auth.models import User
 from rest_framework.validators import UniqueValidator
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
-from rest_framework.authtoken.models import Token
-
-class seriToken(serializers.ModelSerializer):
-    class Meta:
-        model = Token
-        fields = '__all__'
         
 class seriUser(serializers.ModelSerializer):
     email = serializers.EmailField(

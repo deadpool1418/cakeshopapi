@@ -8,20 +8,15 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView,CreateAPIView
-
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework.permissions import IsAuthenticated
-
 from django.core.mail import send_mail
-
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
-
 from django.conf import settings
-
 from django.contrib.auth.models import User
-
 from django.utils.crypto import get_random_string
+
 
 class resetPassword(APIView):
     def post(self,request):
@@ -33,6 +28,7 @@ class resetPassword(APIView):
             return Response({"message":"success"},status=status.HTTP_200_OK)
         except:
             return Response({"message":"Invalid detals"},status=status.HTTP_400_BAD_REQUEST)
+
 
 class recoverpass(APIView):
     def post(self,request):
@@ -54,21 +50,8 @@ class recoverpass(APIView):
         except:
             return Response({"message": "No Such Email exists"},status=status.HTTP_400_BAD_REQUEST)
 
+            return Response({"message": "No Such Email exists"})
 
-# class recoverpass(APIView):
-#     def post(self,request):
-#         email=request.data['email']
-#         pass1 = User.objects.get(email="roshan@gmail.com")
-#         message = "Your Password is "+pass1.password
-#         res = send_mail("Roshan chaudhari",
-#          message, 
-#          settings.EMAIL_HOST_USER, 
-#          [email],
-#          fail_silently=False)
-#         if res:
-#             return Response({"message": "Password Sent to your email"})
-#         else:
-#             return Response({"message": "No Such Email exists"})
 
 class Logout(APIView):
     permission_classes =[IsAuthenticated]
@@ -77,7 +60,8 @@ class Logout(APIView):
         request.user.auth_token.delete()
         print("logout success")
         return Response(status=status.HTTP_200_OK)
-        
+
+
 class placeorder(APIView):
     permission_classes =[IsAuthenticated]
     def post(self,request):
@@ -113,6 +97,7 @@ class showcart(APIView):
         }
         return Response(data,status=status.HTTP_200_OK)
 
+
 class removefromcart(APIView):
     permission_classes =[IsAuthenticated]
     def post(self,request):
@@ -120,12 +105,15 @@ class removefromcart(APIView):
         queryset = cart.objects.filter(cakeid=request.data['cakeid'],email=request.data['email']).delete()
         return Response({"message":"Removed  item from cart"},status=status.HTTP_200_OK)
 
+
+
 class searchitems(APIView):
     def get(self,request,cakes):
         if request.method == 'GET':
             queryset = cake.objects.filter(name__icontains=cakes)
             serializer = seriCake(queryset,context={'request':request},many=True)
             return Response({"data":serializer.data},status=status.HTTP_201_CREATED)
+
 
 class addtocart(APIView):
     permission_classes =[IsAuthenticated]
@@ -138,6 +126,7 @@ class addtocart(APIView):
                 return Response({"data":serialized.data,"errorMessage":"null", "message": "Added to  cart"},status=status.HTTP_201_CREATED)
             return Response({"errorMessage":serialized.errors, "message": "null"})
 
+
 class cakedetails(APIView):
     def get(self,request,id):
         if request.method == 'GET':
@@ -148,6 +137,7 @@ class cakedetails(APIView):
                 "data" : serialized.data,
             }
             return Response(data,status=status.HTTP_200_OK)
+
 
 class addcakes(APIView):
     permission_classes =[IsAuthenticated]
@@ -168,7 +158,6 @@ class allcakes(APIView):
             serializer = seriCake(data,context={"request": request},many=True)
             return Response(serializer.data,status=status.HTTP_201_CREATED)
 
-# from rest_framework.generics import CreateAPIView,ListAPIView
 
 class Upload_image(APIView):
     permission_classes =[IsAuthenticated]
@@ -195,13 +184,7 @@ def user_register(request):
         return Response({'message':"User Already Exist!!"})
 
 
-# class MyTokenObtainPairView(TokenObtainPairView):
-#     serializer_class = MyTokenObtainPairSerializer
-
-
-
 class CustomAuthToken(ObtainAuthToken):
-
     def post(self, request, *args, **kwargs):
         serializer = self.serializer_class(data=request.data,
                                        context={'request': request})
@@ -214,3 +197,24 @@ class CustomAuthToken(ObtainAuthToken):
             'email': user.email,
             'username':user.email
         })
+
+
+# class MyTokenObtainPairView(TokenObtainPairView):
+#     serializer_class = MyTokenObtainPairSerializer
+
+
+
+# class recoverpass(APIView):
+#     def post(self,request):
+#         email=request.data['email']
+#         pass1 = User.objects.get(email="roshan@gmail.com")
+#         message = "Your Password is "+pass1.password
+#         res = send_mail("Roshan chaudhari",
+#          message, 
+#          settings.EMAIL_HOST_USER, 
+#          [email],
+#          fail_silently=False)
+#         if res:
+#             return Response({"message": "Password Sent to your email"})
+#         else:
+# 
