@@ -1,0 +1,1 @@
+web: gunicorn cakeapi.wsgi --log-file -
