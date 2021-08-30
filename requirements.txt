@@ -8,8 +8,5 @@ phonenumbers==8.12.21
 pickleshare==0.7.5
 Pillow==6.2.0
 python-dateutil==2.8.0
-<<<<<<< HEAD
 whitenoise==5.2.0
 gunicorn==20.1.0
-=======
->>>>>>> 7eb5e863ab474a0f90c9540942d80172087425c7
