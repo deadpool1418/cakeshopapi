@@ -19,7 +19,7 @@ from django.utils.crypto import get_random_string
 
 
 class resetPassword(APIView):
-    def post(self,request):
+    def put(self,request):
         try:
             u = User.objects.get(email=request.data['email'])
             u.set_password(request.data['password'])
@@ -35,6 +35,7 @@ class recoverpass(APIView):
         try:
             user = User.objects.get(email=request.data['email'])
             token, created = Token.objects.get_or_create(user=user)
+            token = 'sagrobqwynyr4375q928cn7wyo8394'
             link = 'Use this token for Reset Password : '+str(token)
             print(token)
             res = send_mail("Roshan chaudhari",
@@ -100,7 +101,7 @@ class showcart(APIView):
 
 class removefromcart(APIView):
     permission_classes =[IsAuthenticated]
-    def post(self,request):
+    def delete(self,request):
         print("remove item",id,request.data['email'])
         queryset = cart.objects.filter(cakeid=request.data['cakeid'],email=request.data['email']).delete()
         return Response({"message":"Removed  item from cart"},status=status.HTTP_200_OK)
